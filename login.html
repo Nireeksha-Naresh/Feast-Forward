@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Feast Forward - Login/Register</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f4f4;
+      color: #333;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 400px;
+      padding: 20px;
+    }
+
+    .form-box {
+      background: #fff;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .logo {
+      width: 80px;
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      margin: 10px 0;
+      color: #333;
+    }
+
+    .subtitle {
+      margin-bottom: 20px;
+      color: #777;
+    }
+
+    input[type="email"],
+    input[type="password"] {
+      padding: 12px;
+      margin: 10px auto;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+      width: 100%;
+      background: #fafafa;
+      color: #333;
+    }
+
+    input[type="radio"] {
+      margin-right: 5px;
+    }
+
+    #roleButtons {
+      display: flex;
+      justify-content: space-evenly;
+      margin: 15px 0;
+    }
+
+    #roleButtons label {
+      font-size: 15px;
+      color: #333;
+    }
+
+    button {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+      width: 100%;
+    }
+
+    .switch-link {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #777;
+    }
+
+    .switch-link a {
+      color: #007bff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .switch-link a:hover {
+      text-decoration: underline;
+    }
+
+    .form-box.success {
+      box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+      transition: box-shadow 0.4s;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="form-box" id="formBox">
+      <img src="logo.png" alt="Feast Forward Logo" class="logo"/>
+      <h2 id="formTitle">Feast Forward</h2>
+      <p class="subtitle">Don't Waste, Share the Taste</p>
+      <form id="authForm">
+        <input type="email" placeholder="Email" id="authEmail" required autofocus />
+        <input type="password" placeholder="Password" id="authPassword" required />
+
+        <!-- Role selection (only for login) -->
+        <div id="roleButtons">
+          <label><input type="radio" name="role" value="donor" id="donorRadio" /> Donor</label>
+          <label><input type="radio" name="role" value="recipient" id="recipientRadio" /> Recipient</label>
+        </div>
+
+        <button type="submit" id="submitBtn">Login</button>
+        <p class="switch-link" id="switchLink">
+          Don't have an account? <a href="javascript:void(0);" onclick="switchToRegister()">Register</a>
+        </p>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    let selectedRole = '';
+
+    function animateSuccess() {
+      const box = document.getElementById('formBox');
+      box.classList.add('success');
+      setTimeout(() => box.classList.remove('success'), 800);
+    }
+
+    function switchToRegister() {
+      document.getElementById("formTitle").innerText = "Feast Forward - Register";
+      document.getElementById("authForm").reset();
+      document.getElementById("submitBtn").innerText = "Register";
+      document.getElementById("switchLink").innerHTML =
+        'Already have an account? <a href="javascript:void(0);" onclick="switchToLogin()">Login</a>';
+      document.getElementById("roleButtons").style.display = "none";
+      selectedRole = "";
+      document.getElementById("submitBtn").removeEventListener("click", loginUser);
+      document.getElementById("submitBtn").addEventListener("click", registerUser);
+      document.getElementById("authEmail").focus();
+    }
+
+    function switchToLogin() {
+      document.getElementById("formTitle").innerText = "Feast Forward";
+      document.getElementById("authForm").reset();
+      document.getElementById("submitBtn").innerText = "Login";
+      document.getElementById("switchLink").innerHTML =
+        'Don\'t have an account? <a href="javascript:void(0);" onclick="switchToRegister()">Register</a>';
+      document.getElementById("roleButtons").style.display = "flex";
+      selectedRole = "";
+      document.getElementById("submitBtn").removeEventListener("click", registerUser);
+      document.getElementById("submitBtn").addEventListener("click", loginUser);
+      document.getElementById("authEmail").focus();
+    }
+
+    document.getElementById("donorRadio").addEventListener("change", function () {
+      if (this.checked) selectedRole = 'donor';
+    });
+
+    document.getElementById("recipientRadio").addEventListener("change", function () {
+      if (this.checked) selectedRole = 'recipient';
+    });
+
+    function loginUser(e) {
+      e.preventDefault();
+      const email = document.getElementById("authEmail").value;
+      const password = document.getElementById("authPassword").value;
+
+      if (email && password && selectedRole) {
+        localStorage.setItem("loggedInUserEmail", email);
+        localStorage.setItem("userRole", selectedRole);
+        animateSuccess();
+        setTimeout(() => {
+          window.location.href = "dashboard.html";
+        }, 700);
+      } else {
+        alert("Please fill in all fields and select a role.");
+      }
+    }
+
+    function registerUser(e) {
+      e.preventDefault();
+      const email = document.getElementById("authEmail").value;
+      const password = document.getElementById("authPassword").value;
+
+      if (email && password) {
+        localStorage.setItem("userEmail", email);
+        localStorage.setItem("userPassword", password);
+        animateSuccess();
+        setTimeout(() => {
+          window.location.href = "login.html";
+        }, 700);
+      } else {
+        alert("Please fill in all fields.");
+      }
+    }
+
+    // Load in login mode
+    switchToLogin();
+  </script>
+</body>
+</html>

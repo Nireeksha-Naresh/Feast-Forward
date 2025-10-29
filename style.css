@@ -1,0 +1,93 @@
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #f0f7f7;
+    color: #333;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #00796b;
+    color: white;
+    padding: 1rem 2rem;
+}
+
+.logo-bar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.logo-bar img {
+    height: 40px;
+}
+
+.container, main {
+    padding: 2rem;
+    max-width: 600px;
+    margin: auto;
+}
+
+.form-box {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    margin-top: 3rem;
+    text-align: center;
+}
+
+.form-box input,
+.form-box textarea,
+.form-box button {
+    width: 100%;
+    margin: 0.5rem 0;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+.form-box button {
+    background: #00796b;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.form-box button:hover {
+    background: #004d40;
+}
+
+.role-select {
+    display: flex;
+    justify-content: space-around;
+    margin: 1rem 0;
+}
+
+.shared-food div {
+    background: #e0f2f1;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+    .form-box, header, main {
+        padding: 1rem;
+    }
+
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .user-bar {
+        margin-top: 0.5rem;
+    }
+}
