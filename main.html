@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Simple AI Translator 🌐</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+body {
+  background: #0d1117;
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+}
+.container {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 12px;
+  padding: 20px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 0 20px rgba(88,166,255,0.2);
+}
+h2 {
+  text-align: center;
+  color: #58a6ff;
+  margin-bottom: 15px;
+}
+textarea {
+  width: 100%;
+  height: 120px;
+  background: #0d1117;
+  color: #c9d1d9;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 10px;
+  resize: none;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+select, button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 8px;
+  border: none;
+  font-size: 16px;
+}
+select {
+  background: #161b22;
+  color: #c9d1d9;
+  border: 1px solid #30363d;
+}
+button {
+  background: #238636;
+  color: #fff;
+  cursor: pointer;
+  transition: background .3s;
+}
+button:hover {
+  background: #2ea043;
+}
+.translation-output {
+  margin-top: 10px;
+  background: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 10px;
+  min-height: 60px;
+}
+@media (max-width:600px){
+  textarea {height: 100px;}
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <h2>🌐 Simple AI Translator</h2>
+  <textarea id="inputText" placeholder="Enter text..."></textarea>
+  <select id="fromLang">
+    <option value="en">English</option>
+    <option value="hi">Hindi</option>
+    <option value="es">Spanish</option>
+    <option value="fr">French</option>
+    <option value="de">German</option>
+    <option value="it">Italian</option>
+    <option value="ja">Japanese</option>
+    <option value="ru">Russian</option>
+    <option value="ko">Korean</option>
+    <option value="zh">Chinese</option>
+  </select>
+  <select id="toLang">
+    <option value="hi">Hindi</option>
+    <option value="en">English</option>
+    <option value="es">Spanish</option>
+    <option value="fr">French</option>
+    <option value="de">German</option>
+    <option value="it">Italian</option>
+    <option value="ja">Japanese</option>
+    <option value="ru">Russian</option>
+    <option value="ko">Korean</option>
+    <option value="zh">Chinese</option>
+  </select>
+  <button id="translateBtn">Translate</button>
+  <div class="translation-output" id="outputText">Translation will appear here...</div>
+</div>
+
+<script>
+document.getElementById("translateBtn").addEventListener("click", async () => {
+  const text = document.getElementById("inputText").value.trim();
+  const from = document.getElementById("fromLang").value;
+  const to = document.getElementById("toLang").value;
+  const output = document.getElementById("outputText");
+  
+  if (!text) {
+    output.textContent = "⚠️ Please enter some text.";
+    return;
+  }
+
+  output.textContent = "⏳ Translating...";
+  try {
+    const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${from}|${to}`);
+    const data = await res.json();
+    output.textContent = data.responseData.translatedText || "❌ Translation failed.";
+  } catch (err) {
+    output.textContent = "⚠️ Unable to connect to API.";
+  }
+});
+</script>
+</body>
+</html>
